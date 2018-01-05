@@ -8,10 +8,11 @@
 
 import UIKit
 import Alamofire
+import AlamofireImage
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     var products = [Product]()
-    var productTable = UITableView()
+    @IBOutlet weak var productCollectionView: UICollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,7 +35,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                     self.products.append(product)
                 }
                 DispatchQueue.main.async {
-                    self.productTable.reloadData()
+                    self.productCollectionView.reloadData()
                 }
             }
         }
@@ -42,22 +43,29 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let screenWidth = screenSize.width
         let screenHeight = screenSize.height
         
-        productTable.frame = CGRect(x: 0, y: 100, width: screenWidth, height: screenHeight)
-        productTable.dataSource = self
-        productTable.delegate = self
-        
-        productTable.register(UITableViewCell.self, forCellReuseIdentifier: "myCell")
-        self.view.addSubview(productTable)
+        let itemSize = screenSize.width/2 - 2
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: itemSize, height: itemSize+40)
+        layout.minimumInteritemSpacing = 3
+        layout.minimumLineSpacing = 3
+        productCollectionView.collectionViewLayout = layout
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return products.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell:UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "myCell", for: indexPath)
-        let product = self.products[indexPath.row]
-        cell.textLabel?.text = product.title
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "productCell", for: indexPath) as! ProductCell
+        let product = products[indexPath.row]
+        //print(product.title)
+        cell.titleLabel.text = product.title
+        cell.descriptionLabel.text = product.desc
+        let imageUrl = URL(string: product.imageUrl)
+        cell.productImageView.af_setImage(withURL: imageUrl!)
+        cell.layer.borderColor = UIColor.lightGray.cgColor
+        cell.layer.borderWidth = 1
         return cell
     }
     
@@ -68,4 +76,3 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
 
 }
-

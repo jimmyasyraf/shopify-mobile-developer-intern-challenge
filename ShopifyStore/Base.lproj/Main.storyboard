@@ -1,24 +1,134 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" systemVersion="17A277" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="SeM-JK-7b7">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="HelveticaNeue.ttc">
+            <string>HelveticaNeue-Medium</string>
+        </array>
+    </customFonts>
     <scenes>
-        <!--View Controller-->
+        <!--Shopicruit-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="ShopifyStore" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="ofu-cd-mlS">
+                                <rect key="frame" x="2" y="64" width="375" height="605"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Par-Qt-6kt">
+                                    <size key="itemSize" width="165" height="238"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="productCell" id="mca-ke-FoV" customClass="ProductCell" customModule="ShopifyStore" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="165" height="238"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="165" height="238"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0ln-8N-gqh">
+                                                    <rect key="frame" x="5" y="193" width="155" height="40"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="40" id="U6x-pz-Zmb"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HU2-5l-NCf">
+                                                    <rect key="frame" x="5" y="5" width="155" height="40"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="40" id="OMU-8J-n1R"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="16"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Efo-ut-ntG">
+                                                    <rect key="frame" x="18" y="55" width="129" height="128"/>
+                                                </imageView>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="HU2-5l-NCf" firstAttribute="top" secondItem="mca-ke-FoV" secondAttribute="top" constant="5" id="6GF-Lf-Do8"/>
+                                            <constraint firstAttribute="trailing" secondItem="HU2-5l-NCf" secondAttribute="trailing" constant="5" id="Jh8-de-evz"/>
+                                            <constraint firstItem="0ln-8N-gqh" firstAttribute="leading" secondItem="mca-ke-FoV" secondAttribute="leading" constant="5" id="SfG-rH-Rn8"/>
+                                            <constraint firstItem="HU2-5l-NCf" firstAttribute="leading" secondItem="mca-ke-FoV" secondAttribute="leading" constant="5" id="U5i-tm-lgz"/>
+                                            <constraint firstItem="Efo-ut-ntG" firstAttribute="leading" secondItem="mca-ke-FoV" secondAttribute="leadingMargin" constant="10" id="YAI-ga-Ibm"/>
+                                            <constraint firstItem="Efo-ut-ntG" firstAttribute="top" secondItem="HU2-5l-NCf" secondAttribute="bottom" constant="10" id="epH-lk-VPM"/>
+                                            <constraint firstAttribute="bottom" secondItem="0ln-8N-gqh" secondAttribute="bottom" constant="5" id="gst-wd-igA"/>
+                                            <constraint firstItem="0ln-8N-gqh" firstAttribute="top" secondItem="Efo-ut-ntG" secondAttribute="bottom" constant="10" id="ij1-YU-Vo9"/>
+                                            <constraint firstAttribute="trailing" secondItem="0ln-8N-gqh" secondAttribute="trailing" constant="5" id="nk5-0v-9vd"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="Efo-ut-ntG" secondAttribute="trailing" constant="10" id="teD-c6-uAp"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="descriptionLabel" destination="0ln-8N-gqh" id="JOE-zA-dxc"/>
+                                            <outlet property="productImageView" destination="Efo-ut-ntG" id="Cca-Xc-8rP"/>
+                                            <outlet property="titleLabel" destination="HU2-5l-NCf" id="asX-ry-XTo"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="DTs-Lm-hyn"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="5Ou-9L-8q9"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="ofu-cd-mlS" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="2" id="Leh-2r-EMv"/>
+                            <constraint firstItem="ofu-cd-mlS" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="WLV-A7-mPq"/>
+                            <constraint firstItem="ofu-cd-mlS" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" constant="2" id="cEO-YH-mGq"/>
+                            <constraint firstItem="ofu-cd-mlS" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="2" id="wJo-HP-g2Z"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Shopicruit" id="IaK-Bw-YYc"/>
+                    <connections>
+                        <outlet property="productCollectionView" destination="ofu-cd-mlS" id="ZQ8-Qv-Jdx"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="476" y="94.902548725637189"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="8K2-ez-DN8">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="SeM-JK-7b7" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="F5x-2a-lIi">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.31372549019607843" green="0.72156862745098038" blue="0.23529411764705882" alpha="1" colorSpace="calibratedRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="20"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="XrY-83-m9k"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Za6-Sq-3M0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-401" y="95"/>
         </scene>
     </scenes>
 </document>
