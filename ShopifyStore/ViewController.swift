@@ -18,17 +18,15 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        let json_url = "https://shopicruit.myshopify.com/admin/products.json?page=1&access_token=c32313df0d0ef512ca64d5b336a0d7c6"
+        let jsonUrl = "https://shopicruit.myshopify.com/admin/products.json?page=1&access_token=c32313df0d0ef512ca64d5b336a0d7c6"
 
-        Alamofire.request(json_url).responseJSON { (response) in
-            print("Result: \(response.result)")
+        Alamofire.request(jsonUrl).responseJSON { (response) in
             if let JSON = response.result.value {
                 let jsonResponse = JSON as! [String: AnyObject]
                 let jsonObjects = jsonResponse["products"] as! [[String: AnyObject]]
                 for jsonObject in jsonObjects {
-                    //print(jsonObject["title"] as! String)
-                    //print(jsonObject["image"]!["src"] as! String)
                     let product = Product()
+                    product.id = jsonObject["id"] as! Int
                     product.title = jsonObject["title"] as! String
                     product.desc = jsonObject["body_html"] as! String
                     product.imageUrl = jsonObject["image"]!["src"] as! String
@@ -62,7 +60,6 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "productCell", for: indexPath) as! ProductCell
         let product = products[indexPath.row]
-        //print(product.title)
         cell.titleLabel.text = product.title
         cell.descriptionLabel.text = product.desc
         let imageUrl = URL(string: product.imageUrl)
@@ -82,7 +79,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         backButton.title = "All Products"
         navigationItem.backBarButtonItem = backButton
         var nextViewController : ProductViewController = segue.destination as! ProductViewController
-        nextViewController.product = products[selectedProduct]
+        nextViewController.productId = products[selectedProduct].id
     }
     
     override func didReceiveMemoryWarning() {

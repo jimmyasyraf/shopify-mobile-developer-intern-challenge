@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Alamofire
+import AlamofireImage
 
 class ProductViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
@@ -14,18 +16,39 @@ class ProductViewController: UIViewController {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var typeLabel: UILabel!
     @IBOutlet weak var vendorLabel: UILabel!
+    @IBOutlet weak var priceLabel: UILabel!
     
+    var productId = Int()
     var product = Product()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.tintColor = UIColor.white
-        titleLabel.text = product.title
-        descriptionLabel.text = product.desc
-        typeLabel.text = product.type
-        vendorLabel.text = product.vendor
-        let imageUrl = URL(string: product.imageUrl)
-        productImageView.af_setImage(withURL: imageUrl!)
+        var jsonUrl = "https://shopicruit.myshopify.com/admin/products/" + String(productId) + ".json?access_token=c32313df0d0ef512ca64d5b336a0d7c6"
+        
+        Alamofire.request(jsonUrl).responseJSON { (response) in
+            if let JSON = response.result.value {
+                let jsonResponse = JSON as! [String: AnyObject]
+                let jsonObject = jsonResponse["product"] as! [String: AnyObject]
+                self.product.title = jsonObject["title"] as! String
+                self.product.desc = jsonObject["body_html"] as! String
+                self.product.imageUrl = jsonObject["image"]!["src"] as! String
+                self.product.vendor = jsonObject["vendor"] as! String
+                self.product.type = jsonObject["product_type"] as! String
+                let variants = jsonObject["variants"] as! [[String: AnyObject]]
+                self.product.price = (variants[0]["price"] as! NSString).floatValue
+                
+                DispatchQueue.main.async {
+                    self.titleLabel.text = self.product.title
+                    self.descriptionLabel.text = self.product.desc
+                    self.typeLabel.text = self.product.type
+                    self.vendorLabel.text = self.product.vendor
+                    self.priceLabel.text = "$ \(self.product.price)"
+                    let imageUrl = URL(string: self.product.imageUrl)
+                    self.productImageView.af_setImage(withURL: imageUrl!)
+                }
+            }
+        }
         
     }
 
@@ -33,16 +56,4 @@ class ProductViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
