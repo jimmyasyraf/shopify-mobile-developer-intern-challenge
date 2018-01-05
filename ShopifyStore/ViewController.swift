@@ -13,14 +13,14 @@ import AlamofireImage
 class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     var products = [Product]()
     @IBOutlet weak var productCollectionView: UICollectionView!
+    var selectedProduct = Int()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         let json_url = "https://shopicruit.myshopify.com/admin/products.json?page=1&access_token=c32313df0d0ef512ca64d5b336a0d7c6"
-        let url = URL(string: json_url)
-        
-        Alamofire.request("https://shopicruit.myshopify.com/admin/products.json?page=1&access_token=c32313df0d0ef512ca64d5b336a0d7c6").responseJSON { (response) in
+
+        Alamofire.request(json_url).responseJSON { (response) in
             print("Result: \(response.result)")
             if let JSON = response.result.value {
                 let jsonResponse = JSON as! [String: AnyObject]
@@ -32,6 +32,9 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                     product.title = jsonObject["title"] as! String
                     product.desc = jsonObject["body_html"] as! String
                     product.imageUrl = jsonObject["image"]!["src"] as! String
+                    product.vendor = jsonObject["vendor"] as! String
+                    product.type = jsonObject["product_type"] as! String
+                   // product.price = jsonObject["variants"]!["0"]["price"] as! Float
                     self.products.append(product)
                 }
                 DispatchQueue.main.async {
@@ -67,6 +70,19 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         cell.layer.borderColor = UIColor.lightGray.cgColor
         cell.layer.borderWidth = 1
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        selectedProduct = indexPath.row
+        self.performSegue(withIdentifier: "viewProduct", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let backButton = UIBarButtonItem()
+        backButton.title = "All Products"
+        navigationItem.backBarButtonItem = backButton
+        var nextViewController : ProductViewController = segue.destination as! ProductViewController
+        nextViewController.product = products[selectedProduct]
     }
     
     override func didReceiveMemoryWarning() {

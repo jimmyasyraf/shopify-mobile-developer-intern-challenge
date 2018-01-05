@@ -16,6 +16,7 @@
 		9F3EA8711FFEE68600F4F979 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F3EA86F1FFEE68600F4F979 /* LaunchScreen.storyboard */; };
 		9F3EA8791FFEEEC700F4F979 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3EA8781FFEEEC700F4F979 /* Product.swift */; };
 		9F3EA87B1FFF08D900F4F979 /* ProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3EA87A1FFF08D900F4F979 /* ProductCell.swift */; };
+		9F3EA87D1FFF23BB00F4F979 /* ProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3EA87C1FFF23BB00F4F979 /* ProductViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 		9F3EA8721FFEE68600F4F979 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9F3EA8781FFEEEC700F4F979 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		9F3EA87A1FFF08D900F4F979 /* ProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCell.swift; sourceTree = "<group>"; };
+		9F3EA87C1FFF23BB00F4F979 /* ProductViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductViewController.swift; sourceTree = "<group>"; };
 		B47BCBEFB2D02EF01C9CBEE6 /* Pods_ShopifyStore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ShopifyStore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C36758633FA4A61E547B0E2F /* Pods-ShopifyStore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShopifyStore.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ShopifyStore/Pods-ShopifyStore.debug.xcconfig"; sourceTree = "<group>"; };
 		FE59CD17CE3463663E93C117 /* Pods-ShopifyStore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShopifyStore.release.xcconfig"; path = "Pods/Target Support Files/Pods-ShopifyStore/Pods-ShopifyStore.release.xcconfig"; sourceTree = "<group>"; };
@@ -71,6 +73,7 @@
 				9F3EA8781FFEEEC700F4F979 /* Product.swift */,
 				9F3EA8651FFEE68600F4F979 /* ViewController.swift */,
 				9F3EA8671FFEE68600F4F979 /* Main.storyboard */,
+				9F3EA87C1FFF23BB00F4F979 /* ProductViewController.swift */,
 				9F3EA87A1FFF08D900F4F979 /* ProductCell.swift */,
 				9F3EA86D1FFEE68600F4F979 /* Assets.xcassets */,
 				9F3EA86F1FFEE68600F4F979 /* LaunchScreen.storyboard */,
@@ -228,6 +231,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F3EA87D1FFF23BB00F4F979 /* ProductViewController.swift in Sources */,
 				9F3EA86C1FFEE68600F4F979 /* ShopifyStore.xcdatamodeld in Sources */,
 				9F3EA8791FFEEEC700F4F979 /* Product.swift in Sources */,
 				9F3EA87B1FFF08D900F4F979 /* ProductCell.swift in Sources */,
