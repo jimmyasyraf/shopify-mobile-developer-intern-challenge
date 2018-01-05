@@ -10,10 +10,19 @@ import UIKit
 import Alamofire
 import AlamofireImage
 
-class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UITextFieldDelegate {
     var products = [Product]()
     @IBOutlet weak var productCollectionView: UICollectionView!
+    @IBOutlet weak var searchTextfield: UITextField!
+    
     var selectedProduct = Int()
+    
+    @IBAction func searchAction(_ sender: Any) {
+        let searchTerm = searchTextfield.text
+        if searchTerm != "" {
+            search(term: searchTerm!)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,9 +39,6 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                     product.title = jsonObject["title"] as! String
                     product.desc = jsonObject["body_html"] as! String
                     product.imageUrl = jsonObject["image"]!["src"] as! String
-                    product.vendor = jsonObject["vendor"] as! String
-                    product.type = jsonObject["product_type"] as! String
-                   // product.price = jsonObject["variants"]!["0"]["price"] as! Float
                     self.products.append(product)
                 }
                 DispatchQueue.main.async {
@@ -46,12 +52,45 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         
         let itemSize = screenSize.width/2 - 2
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: itemSize, height: itemSize+40)
-        layout.minimumInteritemSpacing = 3
-        layout.minimumLineSpacing = 3
+        layout.itemSize = CGSize(width: itemSize, height: itemSize+35)
+        layout.minimumInteritemSpacing = 2
+        layout.minimumLineSpacing = 2
         productCollectionView.collectionViewLayout = layout
+        searchTextfield.delegate = self
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        let searchTerm = self.searchTextfield.text
+        if searchTerm != "" {
+            search(term: searchTerm!)
+        }
+        return true
+    }
+    
+    func search(term: String){
+        var searchJsonUrl = "https://shopicruit.myshopify.com/admin/products.json?title=" + term + "&access_token=c32313df0d0ef512ca64d5b336a0d7c6"
+        
+        products.removeAll()
+        
+        Alamofire.request(searchJsonUrl).responseJSON { (response) in
+            if let JSON = response.result.value {
+                let jsonResponse = JSON as! [String: AnyObject]
+                let jsonObjects = jsonResponse["products"] as! [[String: AnyObject]]
+                for jsonObject in jsonObjects {
+                    let product = Product()
+                    product.id = jsonObject["id"] as! Int
+                    product.title = jsonObject["title"] as! String
+                    product.desc = jsonObject["body_html"] as! String
+                    product.imageUrl = jsonObject["image"]!["src"] as! String
+                    self.products.append(product)
+                }
+                DispatchQueue.main.async {
+                    self.productCollectionView.reloadData()
+                }
+            }
+        }
+    }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return products.count
@@ -80,6 +119,10 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         navigationItem.backBarButtonItem = backButton
         var nextViewController : ProductViewController = segue.destination as! ProductViewController
         nextViewController.productId = products[selectedProduct].id
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
     }
     
     override func didReceiveMemoryWarning() {

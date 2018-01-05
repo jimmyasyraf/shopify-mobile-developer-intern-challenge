@@ -25,7 +25,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="ofu-cd-mlS">
-                                <rect key="frame" x="2" y="64" width="375" height="605"/>
+                                <rect key="frame" x="2" y="124" width="373" height="545"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Par-Qt-6kt">
                                     <size key="itemSize" width="165" height="238"/>
@@ -88,12 +88,35 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="5Ou-9L-8q9"/>
                                 </connections>
                             </collectionView>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hWJ-NR-62N">
+                                <rect key="frame" x="15" y="79" width="265" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="search"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jj8-hg-hY2">
+                                <rect key="frame" x="290" y="79" width="55" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="55" id="5EV-h8-JEW"/>
+                                </constraints>
+                                <state key="normal" title="Search!">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="searchAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Qfc-C2-kk5"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="jj8-hg-hY2" firstAttribute="leading" secondItem="hWJ-NR-62N" secondAttribute="trailing" constant="10" id="J9q-th-mqW"/>
                             <constraint firstItem="ofu-cd-mlS" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="2" id="Leh-2r-EMv"/>
-                            <constraint firstItem="ofu-cd-mlS" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="WLV-A7-mPq"/>
-                            <constraint firstItem="ofu-cd-mlS" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" constant="2" id="cEO-YH-mGq"/>
+                            <constraint firstItem="ofu-cd-mlS" firstAttribute="top" secondItem="hWJ-NR-62N" secondAttribute="bottom" constant="15" id="NMc-Qf-R26"/>
+                            <constraint firstItem="hWJ-NR-62N" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="15" id="Nbi-Um-n6J"/>
+                            <constraint firstItem="ofu-cd-mlS" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="cEO-YH-mGq"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="jj8-hg-hY2" secondAttribute="trailing" constant="30" id="jEw-6t-WeM"/>
+                            <constraint firstItem="jj8-hg-hY2" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="15" id="t5P-jy-t4u"/>
+                            <constraint firstItem="hWJ-NR-62N" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="15" id="uEb-Mt-tJu"/>
                             <constraint firstItem="ofu-cd-mlS" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="2" id="wJo-HP-g2Z"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -101,6 +124,7 @@
                     <navigationItem key="navigationItem" title="Shopicruit" id="IaK-Bw-YYc"/>
                     <connections>
                         <outlet property="productCollectionView" destination="ofu-cd-mlS" id="ZQ8-Qv-Jdx"/>
+                        <outlet property="searchTextfield" destination="hWJ-NR-62N" id="AdY-yf-DR0"/>
                         <segue destination="0aZ-hl-8dB" kind="show" identifier="viewProduct" id="6rD-L0-JqD"/>
                     </connections>
                 </viewController>
