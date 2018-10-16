@@ -22,13 +22,34 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         if searchTerm != "" {
             search(term: searchTerm!)
         }
+        else {
+            getAllItems()
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        let screenSize: CGRect = UIScreen.main.bounds
+        let screenWidth = screenSize.width
+        let screenHeight = screenSize.height
+        
+        let itemSize = screenSize.width/2 - 2
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: itemSize, height: itemSize+35)
+        layout.minimumInteritemSpacing = 2
+        layout.minimumLineSpacing = 2
+        productCollectionView.collectionViewLayout = layout
+        searchTextfield.delegate = self
+        
+        getAllItems()
+    }
+    
+    func getAllItems() {
         let jsonUrl = "https://shopicruit.myshopify.com/admin/products.json?page=1&access_token=c32313df0d0ef512ca64d5b336a0d7c6"
-
+        
+        self.products.removeAll()
+        
         Alamofire.request(jsonUrl).responseJSON { (response) in
             if let JSON = response.result.value {
                 let jsonResponse = JSON as! [String: AnyObject]
@@ -46,26 +67,6 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                 }
             }
         }
-        let screenSize: CGRect = UIScreen.main.bounds
-        let screenWidth = screenSize.width
-        let screenHeight = screenSize.height
-        
-        let itemSize = screenSize.width/2 - 2
-        let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: itemSize, height: itemSize+35)
-        layout.minimumInteritemSpacing = 2
-        layout.minimumLineSpacing = 2
-        productCollectionView.collectionViewLayout = layout
-        searchTextfield.delegate = self
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        let searchTerm = self.searchTextfield.text
-        if searchTerm != "" {
-            search(term: searchTerm!)
-        }
-        return true
     }
     
     func search(term: String){
@@ -104,13 +105,22 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         let imageUrl = URL(string: product.imageUrl)
         cell.productImageView.af_setImage(withURL: imageUrl!)
         cell.layer.borderColor = UIColor.lightGray.cgColor
-        cell.layer.borderWidth = 1
+        cell.layer.borderWidth = 0
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectedProduct = indexPath.row
         self.performSegue(withIdentifier: "viewProduct", sender: self)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        let searchTerm = self.searchTextfield.text
+        if searchTerm != "" {
+            search(term: searchTerm!)
+        }
+        return true
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
