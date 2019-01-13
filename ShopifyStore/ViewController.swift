@@ -130,6 +130,9 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         navigationItem.backBarButtonItem = backButton
         var nextViewController : CollectionViewController = segue.destination as! CollectionViewController
         nextViewController.collectionId = collections[selectedCollection].id
+        nextViewController.collectionTitle = collections[selectedCollection].title
+        nextViewController.collectionDescription = collections[selectedCollection].desc
+        nextViewController.collectionImageUrl = collections[selectedCollection].imageUrl
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

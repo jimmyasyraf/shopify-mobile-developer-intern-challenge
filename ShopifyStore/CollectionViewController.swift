@@ -10,30 +10,20 @@ import UIKit
 import Alamofire
 import AlamofireImage
 
-class CollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
-    
+class CollectionViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    var collectionTitle = String()
+    var collectionDescription = String()
+    var collectionImageUrl = String()
     var collectionId = Int()
     var productIds = [String]()
     var products = [Product]()
     var selectedProduct = Int()
     
-    @IBOutlet weak var productCollectionView: UICollectionView!
-    
+    @IBOutlet weak var collectionTableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.tintColor = UIColor.white
-        
-        let screenSize: CGRect = UIScreen.main.bounds
-        let screenWidth = screenSize.width
-        let screenHeight = screenSize.height
-        
-        let itemSize = screenSize.width/2 - 2
-        let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: itemSize, height: itemSize+35)
-        layout.minimumInteritemSpacing = 2
-        layout.minimumLineSpacing = 2
-        productCollectionView.collectionViewLayout = layout
         
         getAllItems()
     }
@@ -49,11 +39,9 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
                     let productId = collect["product_id"] as! Int
                     self.productIds.append(String(productId))
                 }
-                print(self.productIds)
+
                 let prouductIdsString = self.productIds.joined(separator: ",")
-                print(prouductIdsString)
                 let productsUrl = "https://shopicruit.myshopify.com/admin/products.json?ids=" + prouductIdsString + "&access_token=c32313df0d0ef512ca64d5b336a0d7c6"
-                print(productsUrl)
                 
                 Alamofire.request(productsUrl).responseJSON { (response) in
                     if let productsJson = response.result.value {
@@ -75,7 +63,7 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
                             self.products.append(product)
                         }
                         DispatchQueue.main.async {
-                            self.productCollectionView.reloadData()
+                            self.collectionTableView.reloadData()
                         }
                     }
                 }
@@ -83,26 +71,40 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return products.count
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return products.count + 1
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "productCell", for: indexPath) as! ProductCell
-        let product = products[indexPath.row]
-        cell.titleLabel.text = product.title
-        cell.descriptionLabel.text = product.desc
-        cell.inventoryLabel.text = "Available: " + String(product.totalInventory)
-        let imageUrl = URL(string: product.imageUrl)
-        cell.productImageView.af_setImage(withURL: imageUrl!)
-        cell.layer.borderColor = UIColor.lightGray.cgColor
-        cell.layer.borderWidth = 0
-        return cell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if (indexPath.row == 0) {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "collectionViewCell", for: indexPath) as! CollectionViewCell
+            cell.titleLabel.text = collectionTitle
+            cell.descriptionLabel.text = collectionDescription
+            let imageUrl = URL(string: collectionImageUrl)
+            cell.collectionImageView.af_setImage(withURL: imageUrl!)
+            cell.selectionStyle = UITableViewCellSelectionStyle.none
+            cell.layoutMargins = UIEdgeInsets.zero
+            cell.separatorInset = UIEdgeInsets.zero
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "productCell", for: indexPath) as! ProductCell
+            let product = products[indexPath.row - 1]
+            cell.titleLabel.text = product.title
+            cell.descriptionLabel.text = product.desc
+            cell.inventoryLabel.text = "Available: " + String(product.totalInventory)
+            let imageUrl = URL(string: product.imageUrl)
+            cell.productImageView.af_setImage(withURL: imageUrl!)
+            cell.layoutMargins = UIEdgeInsets.zero
+            cell.separatorInset = UIEdgeInsets.zero
+            return cell
+        }
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        selectedProduct = indexPath.row
-        self.performSegue(withIdentifier: "viewProduct", sender: self)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row != 0 {
+            selectedProduct = indexPath.row - 1
+            self.performSegue(withIdentifier: "viewProduct", sender: self)
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -113,11 +115,7 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
         nextViewController.productId = products[selectedProduct].id
     }
     
-    
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
-
 }
