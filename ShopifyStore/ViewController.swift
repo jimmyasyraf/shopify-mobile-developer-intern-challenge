@@ -11,11 +11,13 @@ import Alamofire
 import AlamofireImage
 
 class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UITextFieldDelegate {
-    var products = [Product]()
-    @IBOutlet weak var productCollectionView: UICollectionView!
+    var collections = [Collection]()
+    
     @IBOutlet weak var searchTextfield: UITextField!
+    @IBOutlet weak var collectionCollectionView: UICollectionView!
     
     var selectedProduct = Int()
+    var selectedCollection = Int()
     
     @IBAction func searchAction(_ sender: Any) {
         let searchTerm = searchTextfield.text
@@ -39,79 +41,78 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         layout.itemSize = CGSize(width: itemSize, height: itemSize+35)
         layout.minimumInteritemSpacing = 2
         layout.minimumLineSpacing = 2
-        productCollectionView.collectionViewLayout = layout
+        collectionCollectionView.collectionViewLayout = layout
         searchTextfield.delegate = self
         
         getAllItems()
     }
     
     func getAllItems() {
-        let jsonUrl = "https://shopicruit.myshopify.com/admin/products.json?page=1&access_token=c32313df0d0ef512ca64d5b336a0d7c6"
+        let jsonUrl = "https://shopicruit.myshopify.com/admin/custom_collections.json?page=1&access_token=c32313df0d0ef512ca64d5b336a0d7c6"
         
-        self.products.removeAll()
+        self.collections.removeAll()
         
         Alamofire.request(jsonUrl).responseJSON { (response) in
             if let JSON = response.result.value {
                 let jsonResponse = JSON as! [String: AnyObject]
-                let jsonObjects = jsonResponse["products"] as! [[String: AnyObject]]
+                let jsonObjects = jsonResponse["custom_collections"] as! [[String: AnyObject]]
                 for jsonObject in jsonObjects {
-                    let product = Product()
-                    product.id = jsonObject["id"] as! Int
-                    product.title = jsonObject["title"] as! String
-                    product.desc = jsonObject["body_html"] as! String
-                    product.imageUrl = jsonObject["image"]!["src"] as! String
-                    self.products.append(product)
+                    let collection = Collection()
+                    collection.id = jsonObject["id"] as! Int
+                    collection.title = jsonObject["title"] as! String
+                    collection.desc = jsonObject["body_html"] as! String
+                    collection.imageUrl = jsonObject["image"]!["src"] as! String
+                    self.collections.append(collection)
                 }
                 DispatchQueue.main.async {
-                    self.productCollectionView.reloadData()
+                    self.collectionCollectionView.reloadData()
                 }
             }
         }
     }
     
     func search(term: String){
-        var searchJsonUrl = "https://shopicruit.myshopify.com/admin/products.json?title=" + term + "&access_token=c32313df0d0ef512ca64d5b336a0d7c6"
+        var searchJsonUrl = "https://shopicruit.myshopify.com/admin/custom_collections.json?title=" + term + "&access_token=c32313df0d0ef512ca64d5b336a0d7c6"
         
-        products.removeAll()
+        collections.removeAll()
         
         Alamofire.request(searchJsonUrl).responseJSON { (response) in
             if let JSON = response.result.value {
                 let jsonResponse = JSON as! [String: AnyObject]
-                let jsonObjects = jsonResponse["products"] as! [[String: AnyObject]]
+                let jsonObjects = jsonResponse["custom_collections"] as! [[String: AnyObject]]
                 for jsonObject in jsonObjects {
-                    let product = Product()
-                    product.id = jsonObject["id"] as! Int
-                    product.title = jsonObject["title"] as! String
-                    product.desc = jsonObject["body_html"] as! String
-                    product.imageUrl = jsonObject["image"]!["src"] as! String
-                    self.products.append(product)
+                    let collection = Collection()
+                    collection.id = jsonObject["id"] as! Int
+                    collection.title = jsonObject["title"] as! String
+                    collection.desc = jsonObject["body_html"] as! String
+                    collection.imageUrl = jsonObject["image"]!["src"] as! String
+                    self.collections.append(collection)
                 }
                 DispatchQueue.main.async {
-                    self.productCollectionView.reloadData()
+                    self.collectionCollectionView.reloadData()
                 }
             }
         }
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return products.count
+        return collections.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "productCell", for: indexPath) as! ProductCell
-        let product = products[indexPath.row]
-        cell.titleLabel.text = product.title
-        cell.descriptionLabel.text = product.desc
-        let imageUrl = URL(string: product.imageUrl)
-        cell.productImageView.af_setImage(withURL: imageUrl!)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell", for: indexPath) as! CollectionCell
+        let collection = collections[indexPath.row]
+        cell.titleLabel.text = collection.title
+        let imageUrl = URL(string: collection.imageUrl)
+        cell.collectionImageView.af_setImage(withURL: imageUrl!)
         cell.layer.borderColor = UIColor.lightGray.cgColor
         cell.layer.borderWidth = 0
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        selectedProduct = indexPath.row
-        self.performSegue(withIdentifier: "viewProduct", sender: self)
+        selectedCollection = indexPath.row
+        self.performSegue(withIdentifier: "viewCollection", sender: self)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -125,10 +126,10 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let backButton = UIBarButtonItem()
-        backButton.title = "All Products"
+        backButton.title = "All Collections"
         navigationItem.backBarButtonItem = backButton
-        var nextViewController : ProductViewController = segue.destination as! ProductViewController
-        nextViewController.productId = products[selectedProduct].id
+        var nextViewController : CollectionViewController = segue.destination as! CollectionViewController
+        nextViewController.collectionId = collections[selectedCollection].id
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

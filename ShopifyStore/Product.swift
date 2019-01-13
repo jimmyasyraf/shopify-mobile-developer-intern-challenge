@@ -16,4 +16,5 @@ class Product: NSObject {
     var price = Float()
     var vendor = String()
     var type = String()
+    var totalInventory = Int()
 }
